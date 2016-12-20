@@ -1,7 +1,7 @@
-      #map {
-		  height: 100%;
-		  
-	}
+#map {
+	  height: 100%;
+	  
+}
 html, body, .container{
 	height: 100%;
 }
@@ -9,10 +9,16 @@ html, body, .container{
 	position: relative;
 }
 .places-gone{
-	background-color: red;
-	width: 10%;
-	height: 10%;
+	background-color: #ccc;
 	position: absolute;
 	top: 10px;
 	left: 10px;
+}
+.location{
+	width: 150px;
+	background-color: black;
+	color: white;
+	margin: auto;
+	margin-top: 1px;
+	text-align: center;
 }
