@@ -14,8 +14,12 @@
 		<div class="container">
 			<div id="map"></div>
 			<div class="places-gone">
-				<div class="location">Locations Traveled</div>
-				<div class="location filter"></div>
+				<div class="location"> LOCATIONS </div>
+				<div class="location">
+					<select data-bind="options: locationTypes"></select>
+				</div>
+			<div data-bind="foreach: locations" class="location">
+				<div data-bind="text: name" class="location"></div>
 			</div>
 		</div>
 		<script src="js/app.js"></script>

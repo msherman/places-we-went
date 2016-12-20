@@ -1,5 +1,6 @@
 function AppViewModel(){
-	var locations = ko.observableArray(
+	var self = this;
+	self.locations = ko.observableArray(
 		[
 			{name: "Los Angeles, CA", loc: {lat: 34.0522342, lng: -118.2436849}, trip: "Cutthroat"},
 			{name: "Green Bay, WI", loc: {lat: 44.51915899999999, lng: -88.01982599999997}, trip: "Home"},
@@ -32,7 +33,7 @@ function AppViewModel(){
 	);
 	var map;
 	var markers = [];
-	var locationTypes = [];
+	self.locationTypes = [];
 
 	function initMap(){
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -81,33 +82,18 @@ function AppViewModel(){
 		map.fitBounds(bounds);
 	};
 
-	function addNavLocations(){
+	function addNavTypes(){
 		var locDetails;
-		var navigationDiv = "";
-		locationTypes.push("All");
-		for (var i = 0; i < locations().length; i++){
-			locDetails = locations()[i];
-			if (locationTypes.indexOf(locDetails.trip) == -1){
-				locationTypes.push(locDetails.trip);
+		self.locationTypes.push("All");
+		for (var i = 0; i < self.locations().length; i++){
+			locDetails = self.locations()[i];
+			if (self.locationTypes.indexOf(locDetails.trip) == -1){
+				self.locationTypes.push(locDetails.trip);
 			}
-			navigationDiv += "<div class=\"location\">"+locDetails.name+"</div>";
 		}
-		
-		$(".places-gone").append(populateDDL() + navigationDiv);
+		self.locationTypes.sort();
 	}
 
-	function populateDDL(){
-		locationTypes.sort();
-		var listOfTypes = "<div class=\"location\"><select>";
-		var type = "";
-		for (var i = 0; i < locationTypes.length; i++){
-			type = locationTypes[i];
-			listOfTypes += "<option value=\""+type+"\">"+type+"</option>";
-		}
-		listOfTypes += "</select></div>";
-		return listOfTypes;
-	}
-	initMap();
-	//addNavLocations();
+	addNavTypes();
 }
-function initMap() {AppViewModel.initMap};
+ko.applyBindings(new AppViewModel());
