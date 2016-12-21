@@ -149,6 +149,7 @@ var viewModel = function(){
 	var self = this;
 	var map;
 	var markers = [];
+	var markerMap = new Map();
 	this.locationTypes = ko.observableArray([]);
 	this.locations = ko.observableArray([]);
 	locationData.forEach(function(placeData){
@@ -165,6 +166,7 @@ var viewModel = function(){
 				self.locations()[i].enabled(false);
 			}
 		}
+		updateMapMarkers();
 	});
 
 	function addNavTypes(){
@@ -198,6 +200,7 @@ var viewModel = function(){
 			}
 		}
 		centerMap(map);
+		
 	};
 
 	function addMarker(location){
@@ -205,9 +208,25 @@ var viewModel = function(){
 			map: map,
 			position: location
 		});
-		markers.push(marker);
-		
+		markers.push(marker)
+		//I don't want to have to iterate over the marker array multiple times in the updateMapMarkers call as this would be inefficient. Creating a map to store the lat/lng and index location combination
+		markerMap.set(location, markers.indexOf(marker));
+
 	};
+	
+	function updateMapMarkers(){
+		var markerPositionInArray;
+		for (var i = 0; i < self.locations().length; i++){
+			markerPositionInArray = markerMap.get(self.locations()[i].loc());
+			if (self.locations()[i].enabled()){
+				console.log(markerPositionInArray);
+				markers[markerPositionInArray].setMap(map);
+			}else{
+				console.log("disable marker");
+				markers[markerPositionInArray].setMap(null);
+			}
+		}
+	}
 
 	/* Helper function to find geo locations as needed */
 	function getGeoCodeLoc(){
