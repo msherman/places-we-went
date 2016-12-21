@@ -1,3 +1,4 @@
+//Location data used for displaying Markers and filtering.
 var locationData = [
 	{
 		name: "Los Angeles, CA",
@@ -15,7 +16,7 @@ var locationData = [
 		trip: "Thanksgiving"
 	},
 	{
-		name: "Mineapolis, MN",
+		name: "Minneapolis, MN",
 		loc: {lat: 44.977753, lng: -93.26501080000003},
 		trip: "Weekend Getaways"
 	},
@@ -136,8 +137,7 @@ var locationData = [
 	}
 ];
 
-
-
+//Place object that will hold the Knockout variables
 var place = function(data){
 	this.name = ko.observable(data.name);
 	this.loc = ko.observable(data.loc);
@@ -145,6 +145,7 @@ var place = function(data){
 	this.enabled = ko.observable(true);
 }
 
+//View model contains the main driver of the work.
 var viewModel = function(){
 	var self = this;
 	var map;
@@ -152,10 +153,14 @@ var viewModel = function(){
 	var markerMap = new Map();
 	this.locationTypes = ko.observableArray([]);
 	this.locations = ko.observableArray([]);
+	
+	//Add a new place to the locations array I put this in a knockout array, but you could get away with not.
 	locationData.forEach(function(placeData){
 		self.locations.push(new place(placeData));
 	});
 	self.locTypeField = ko.observable();
+	
+	//Add a function when the DDL changes to update the visible markers both in the list and in google maps.
 	self.locTypeField.subscribe(function(newValue){
 		for (var i = 0; i < self.locations().length; i++){
 			if (newValue == "All"){
@@ -168,7 +173,8 @@ var viewModel = function(){
 		}
 		updateMapMarkers();
 	});
-
+	
+	//This builds the array needed for the drop down list.
 	function addNavTypes(){
 		var locDetails;
 		self.locationTypes.push("All");
@@ -186,7 +192,8 @@ var viewModel = function(){
 	/*****************/
 	/* map functions */
 	/*****************/
-	
+
+	//Initialize the starting map, add markers, and center the map.
 	function initMap(){
 		map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 13,
@@ -203,6 +210,8 @@ var viewModel = function(){
 		
 	};
 
+	//First create a new marker and push it to the marker array
+	//Second create a map of loc:{lat: , lng:} and Index position to make it easier in a future function to update the marker
 	function addMarker(location){
 		var marker = new google.maps.Marker({
 			map: map,
@@ -214,18 +223,18 @@ var viewModel = function(){
 
 	};
 	
+	//This checks the  locations array to see if it is enabled and if it exists on the map. If it is enabled and not on the map it will be added to the map. If it isn't enabled and on the map it removes it.
 	function updateMapMarkers(){
 		var markerPositionInArray;
 		for (var i = 0; i < self.locations().length; i++){
 			markerPositionInArray = markerMap.get(self.locations()[i].loc());
-			if (self.locations()[i].enabled()){
-				console.log(markerPositionInArray);
+			if (self.locations()[i].enabled() && markers[markerPositionInArray].getMap() === null){
 				markers[markerPositionInArray].setMap(map);
-			}else{
-				console.log("disable marker");
+			}else if (!self.locations()[i].enabled() && markers[markerPositionInArray].getMap() === map){
 				markers[markerPositionInArray].setMap(null);
 			}
 		}
+		centerMap(map);
 	}
 
 	/* Helper function to find geo locations as needed */
@@ -242,17 +251,27 @@ var viewModel = function(){
 			}	
 		}
 	};
-
+	
+	//centers the map
 	function centerMap(){
+		var activeMarkerCount = 0;
 		var bounds = new google.maps.LatLngBounds();
 		for (var i = 0; i < markers.length; i++){
-			bounds.extend(markers[i].position);
+			if (markers[i].map === map){
+				bounds.extend(markers[i].position);
+				activeMarkerCount +=1;
+			}
 		};
 		map.fitBounds(bounds);
+	/*	if (activeMarkerCount == 1){
+			map.setZoom(8);
+		}*/
 	};
 	
 	initMap();
 }
+
+//initial app call to create the KO bindings and load the map.
 function loadApp(){
 	ko.applyBindings(new viewModel());
 }
