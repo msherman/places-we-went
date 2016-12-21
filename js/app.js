@@ -232,6 +232,6 @@ var viewModel = function(){
 		map.fitBounds(bounds);
 	};
 	
-	initMap();
+	//initMap();
 }
 ko.applyBindings(new viewModel());
