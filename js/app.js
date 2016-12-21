@@ -233,7 +233,7 @@ var viewModel = function(){
 			infowindow.marker = marker;
 			infowindow.setContent('<div>'+marker.title+'</div>');
 			infowindow.open(map, marker);
-			infowindow.addLIstener('closeclick', function(){
+			infowindow.addListener('closeclick', function(){
 				infowindow.marker = null;
 			});
 		}
@@ -284,6 +284,9 @@ var viewModel = function(){
 			map.setZoom(5);
 		}
 	};
+	self.showWindow = function (data){
+		showInfo(markers[markerMap.get(data.loc())], infoWindow);
+	}
 	
 	initMap();
 }

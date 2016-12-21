@@ -14,11 +14,18 @@ html, body, .container{
 	top: 10px;
 	left: 10px;
 }
-.location{
+.location, .place{
 	width: 150px;
 	background-color: black;
 	color: white;
 	margin: auto;
 	margin-top: 1px;
 	text-align: center;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-sleect: none;
+}
+.place:hover{
+	background-color: green;
+	cursor: pointer;
 }

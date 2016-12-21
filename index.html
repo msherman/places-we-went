@@ -17,7 +17,7 @@
 					<select data-bind="options: locationTypes, value: locTypeField"></select>
 				</div>
 			<div data-bind="foreach: locations" class="location">
-				<div data-bind="text: name, visible: enabled" class="location"></div>
+				<div data-bind="text: name, visible: enabled, click: $parent.showWindow" class="place"></div>
 			</div>
 		</div>
 		<script src="js/app.js"></script>
