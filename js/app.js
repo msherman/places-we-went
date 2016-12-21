@@ -148,9 +148,6 @@ var place = function(data){
 //View model contains the main driver of the work.
 var viewModel = function(){
 	var self = this;
-	var map;
-	var markers = [];
-	var markerMap = new Map();
 	this.locationTypes = ko.observableArray([]);
 	this.locations = ko.observableArray([]);
 	
@@ -192,7 +189,10 @@ var viewModel = function(){
 	/*****************/
 	/* map functions */
 	/*****************/
-
+	var map;
+	var markers = [];
+	var markerMap = new Map();
+	var infoWindow = new google.maps.InfoWindow();
 	//Initialize the starting map, add markers, and center the map.
 	function initMap(){
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -201,7 +201,7 @@ var viewModel = function(){
 		});
 		for (var i = 0; i < self.locations().length; i++){
 			if (self.locations()[i].loc() != ""){
-				addMarker(self.locations()[i].loc());
+				addMarker(self.locations()[i]);
 /*			}else{
 				getGeoCodeLoc(map); */
 			}
@@ -215,13 +215,29 @@ var viewModel = function(){
 	function addMarker(location){
 		var marker = new google.maps.Marker({
 			map: map,
-			position: location
+			title: location.name(),
+			position: location.loc(),
+			animation: google.maps.Animation.DROP
 		});
 		markers.push(marker)
 		//I don't want to have to iterate over the marker array multiple times in the updateMapMarkers call as this would be inefficient. Creating a map to store the lat/lng and index location combination
-		markerMap.set(location, markers.indexOf(marker));
+		markerMap.set(location.loc(), markers.indexOf(marker));
+		marker.addListener('click', function(){
+			showInfo(marker, infoWindow);
+		});
 
 	};
+	
+	function showInfo(marker, infowindow){
+		if (infowindow.marker != marker){
+			infowindow.marker = marker;
+			infowindow.setContent('<div>'+marker.title+'</div>');
+			infowindow.open(map, marker);
+			infowindow.addLIstener('closeclick', function(){
+				infowindow.marker = null;
+			});
+		}
+	}
 	
 	//This checks the  locations array to see if it is enabled and if it exists on the map. If it is enabled and not on the map it will be added to the map. If it isn't enabled and on the map it removes it.
 	function updateMapMarkers(){
@@ -261,11 +277,12 @@ var viewModel = function(){
 				bounds.extend(markers[i].position);
 				activeMarkerCount +=1;
 			}
+			markers[i].setAnimation(google.maps.Animation.DROP);
 		};
 		map.fitBounds(bounds);
-	/*	if (activeMarkerCount == 1){
-			map.setZoom(8);
-		}*/
+		if (activeMarkerCount < markers.length){
+			map.setZoom(5);
+		}
 	};
 	
 	initMap();
