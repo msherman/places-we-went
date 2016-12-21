@@ -17,7 +17,7 @@ var locationData = [
 	{
 		name: "Mineapolis, MN",
 		loc: {lat: 44.977753, lng: -93.26501080000003},
-		trip: "Weekend Getaway"
+		trip: "Weekend Getaways"
 	},
 	{
 		name: "Chicago, IL",
@@ -42,17 +42,17 @@ var locationData = [
 	{
 		name: "Fort Myer, FL",
 		loc: {lat: 26.640628, lng: -81.87230840000001},
-		trip: "Visit Sirya"
+		trip: "Visit Suriya"
 	},
 	{
 		name: "Sarasota, FL",
 		loc: {lat: 27.3364347, lng: -82.53065270000002},
-		trip: "Visit Sirya"
+		trip: "Visit Suriya"
 	},
 	{
 		name: "New Orleans, LA",
 		loc: {lat: 29.95106579999999, lng: -90.0715323},
-		trip: "Weekend Getaway"
+		trip: "Weekend Getaways"
 	},
 	{
 		name: "Springdale, UT",
@@ -190,9 +190,9 @@ var viewModel = function(){
 			zoom: 13,
 			mapTypeControl: false
 		});
-		for (var i = 0; i < locations().length; i++){
-			if (locations()[i].loc() != ""){
-				addMarker(locations()[i].loc());
+		for (var i = 0; i < self.locations().length; i++){
+			if (self.locations()[i].loc() != ""){
+				addMarker(self.locations()[i].loc());
 /*			}else{
 				getGeoCodeLoc(map); */
 			}
@@ -232,6 +232,8 @@ var viewModel = function(){
 		map.fitBounds(bounds);
 	};
 	
-	//initMap();
+	initMap();
 }
-ko.applyBindings(new viewModel());
+function loadApp(){
+	ko.applyBindings(new viewModel());
+}
