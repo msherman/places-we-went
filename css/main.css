@@ -29,3 +29,7 @@ html, body, .container{
 	background-color: green;
 	cursor: pointer;
 }
+
+#locationList{
+	/*display: none;*/
+}

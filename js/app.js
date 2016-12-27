@@ -251,6 +251,7 @@ var viewModel = function(){
 			}
 		}
 		centerMap(map);
+		infoWindow.marker = null;
 	}
 
 	/* Helper function to find geo locations as needed */
