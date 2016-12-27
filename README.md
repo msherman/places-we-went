@@ -29,7 +29,7 @@ Google Maps api project showing the places we went
   * Status: `TODO`
 
 10. Add functionality to animate a map marker when either the list item associated with it or the map marker itself is selected.
-  * Status: `TODO`
+  * Status: __DONE__
 
 11. Add functionality to open an infoWindow with the information described in step 9 (you can also populate a DOM element with this info, but you should still open an infoWindow, even with minimal info, like location name) when either a location is selected from the list view or its map marker is selected directly.
   * Status: `TODO`
