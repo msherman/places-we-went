@@ -26,9 +26,7 @@ Google Maps api project showing the places we went
   * Status: __DONE__
 
 9. Add functionality using third-party APIs to provide information when a map marker or list view entry is clicked (ex: Yelp reviews, Wikipedia, Flickr images, etc). Note that StreetView and Places don't count as an additional 3rd party API because they are libraries included in the Google Maps API. If you need a refresher on making AJAX requests to third-party servers, check out our Intro to AJAX course. Please provide attribution to the data sources/APIs you use. For example if you are using Foursquare, indicate somewhere in your interface and in your README that you used Foursquare's API.
-  * Status: ```diff
-  -TODO
-  ```
+  * Status: `TODO`
 
 10. Add functionality to animate a map marker when either the list item associated with it or the map marker itself is selected.
   * Status: `TODO`
