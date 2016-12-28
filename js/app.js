@@ -329,10 +329,11 @@ var viewModel = function(){
 		if (locData === null){
 			locData = marker.data;
 		}
-		getWikiInfo(locData);
+		var info = getWikiInfo(locData);
+		console.log(info);
 		if (infowindow.marker != marker){
 			infowindow.marker = marker;
-			infowindow.setContent('<div>'+marker.title+'</div>');
+			infowindow.setContent(info);
 			infowindow.open(map, marker);
 			marker.setAnimation(google.maps.Animation.BOUNCE);
 			infowindow.addListener('closeclick', function(){
@@ -413,6 +414,7 @@ var viewModel = function(){
 		}else{
 			searchCriteria = data.city();
 		}
+		var info;
 		$.ajax({
 		url: 'http://en.wikipedia.org/w/api.php',
 		data: { action: 'opensearch', search: searchCriteria, format: 'json'},
@@ -424,12 +426,12 @@ var viewModel = function(){
 			console.log(x[1][0]);
 			console.log("-----Description-----");
 			console.log(x[2][0]);
-
+			info = "<div><span>-----Title-----</span><span>"+x[1][0]+"</span><span>-----Description-----</span><span>"+x[2][0]+"</span><span>Source: <a href="+x[3][0]+">Wikipedia</a></span></div>";
+			return info;
 		})
 		.fail(function(x){
 			console.log('failed');
 		});
-	
 	//https://en.wikipedia.org/w/api.php?action=query&list=allpages&apfrom=New%20York,%20NY&apto=New%20York,%20NY&aplimit=5
 	}
 }
