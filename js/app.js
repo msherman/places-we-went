@@ -193,6 +193,7 @@ var locationData = [
 
 //Place object that will hold the Knockout variables
 var place = function(data){
+	this.city = ko.observable(data.city);
 	this.name = ko.observable(data.city+", "+data.abbr);
 	this.fullName = ko.observable(data.city+", "+data.state);
 	this.loc = ko.observable(data.loc);
@@ -270,7 +271,7 @@ var viewModel = function(){
 	function addMarker(location){
 		var marker = new google.maps.Marker({
 			map: map,
-			title: location.fullName(),
+			title: location.city(),
 			position: location.loc(),
 			animation: google.maps.Animation.DROP
 		});
