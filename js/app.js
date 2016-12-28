@@ -5,189 +5,216 @@ var locationData = [
 		state: "California",
 		abbr: "CA",
 		loc: {lat: 34.0522342, lng: -118.2436849},
-		trip: "Cutthroat"
+		trip: "Cutthroat",
+		search: "city"
 	},
 	{
 		city: "Green Bay",
 		state: "Wisconsin",
 		abbr: "WI",
 		loc: {lat: 44.51915899999999, lng: -88.01982599999997},
-		trip: "Home"
+		trip: "Home",
+		search: "full"
 	},
 	{
 		city: "Tampa Bay",
 		state: "Florida",
 		abbr: "FL",
 		loc: {lat: 27.763383, lng: -82.5436722},
-		trip: "Thanksgiving"
+		trip: "Thanksgiving",
+		search: "city"
 	},
 	{
 		city: "Minneapolis",
 		state: "Minnesota",
 		abbr: "MN",
 		loc: {lat: 44.977753, lng: -93.26501080000003},
-		trip: "Weekend Getaways"
+		trip: "Weekend Getaways",
+		search: "city"
 	},
 	{
 		city: "Chicago",
 		state: "Illinois",
 		abbr: "IL",
 		loc: {lat: 41.8781136, lng: -87.62979819999998},
-		trip: "Engagement"
+		trip: "Engagement",
+		search: "city"
 	},
 	{
 		city: "Ocho Rios",
 		state: "Jamaica",
 		abbr: "JM",
 		loc: {lat: 18.4073894, lng: -77.10313450000001},
-		trip: "Jamaica"
+		trip: "Jamaica",
+		search: "city"
 	},
 	{
 		city: "Castries",
 		state: "Saint Lucia",
 		abbr: "LC",
 		loc: {lat: 14.0101094, lng: -60.98746870000002},
-		trip: "Honeymoon"
+		trip: "Honeymoon",
+		search: "city"
 	},
 	{
 		city: "Las Vegas",
 		state: "Nevada",
 		abbr: "NV",
 		loc: {lat: 36.1699412, lng: -115.13982959999998},
-		trip: "Vegas"
+		trip: "Vegas",
+		search: "city"
 	},
 	{
-		city: "Fort Myer",
+		city: "Fort Myers",
 		state: "Florida",
 		abbr: "FL",
 		loc: {lat: 26.640628, lng: -81.87230840000001},
-		trip: "Visit Suriya"
+		trip: "Visit Suriya",
+		search: "full"
 	},
 	{
 		city: "Sarasota",
 		state: "Florida",
 		abbr: "FL",
 		loc: {lat: 27.3364347, lng: -82.53065270000002},
-		trip: "Visit Suriya"
+		trip: "Visit Suriya",
+		search: "city"
 	},
 	{
 		city: "New Orleans",
 		state: "Louisianna",
 		abbr: "LA",
 		loc: {lat: 29.95106579999999, lng: -90.0715323},
-		trip: "Weekend Getaways"
+		trip: "Weekend Getaways",
+		search: "city"
 	},
 	{
 		city: "Springdale",
 		state: "Utah",
 		abbr: "UT",
 		loc: {lat: 37.1888713, lng: -112.99855150000002},
-		trip: "Vegas"
+		trip: "Vegas",
+		search: "full"
 	},
 	{
 		city: "Shippensburg",
 		state: "Pennsylvania",
 		abbr: "PA",
 		loc: {lat: 40.0506453, lng: -77.52026469999998},
-		trip: "Work"
+		trip: "Work",
+		search: "city"
 	},
 	{
 		city: "Fullerton",
 		state: "California",
 		abbr: "CA",
 		loc: {lat: 33.8703596, lng: -117.92429659999999},
-		trip: "Work"
+		trip: "Work",
+		search: "full"
 	},
 	{
 		city: "West Bend",
 		state: "Wisconsin",
 		abbr: "WI",
 		loc: {lat: 43.4252776, lng: -88.18342769999998},
-		trip: "Work"
+		trip: "Work",
+		search: "full"
 	},
 	{
 		city: "Richland Center",
 		state: "Wisconsin",
 		abbr: "WI",
 		loc: {lat: 43.3347053, lng: -90.38679279999997},
-		trip: "Work"
+		trip: "Work",
+		search: "full"
 	},
 	{
 		city: "Logan",
 		state: "Utah",
 		abbr: "UT",
-		loc: {lat: 41.7369803, lng: -111.8338359}, trip:
-		"Work"
+		loc: {lat: 41.7369803, lng: -111.8338359},
+		trip: "Work",
+		search: "Full"
 	},
 	{
 		city: "Monett",
 		state: "Missouri",
 		abbr: "MO",
 		loc: {lat: 36.9289502, lng: -93.92770710000002},
-		trip: "Work"
+		trip: "Work",
+		search: "city"
 	},
 	{
 		city: "Smithfield",
 		state: "Utah",
 		abbr: "UT",
 		loc: {lat: 41.8382622, lng: -111.83272290000002},
-		trip: "Work"
+		trip: "Work",
+		search: "full"
 	},
 	{
 		city: "Tempe",
 		state: "Arizona",
 		abbr: "AZ",
 		loc: {lat: 33.4255104, lng: -111.94000540000002},
-		trip: "Work"
+		trip: "Work",
+		search: "full"
 	},
 	{
 		city: "Marquette",
 		state: "Michigan",
 		abbr: "MI",
 		loc: {lat: 46.5475825, lng: -87.39559539999999},
-		trip: "College"
+		trip: "College",
+		search: "full"
 	},
 	{
 		city: "Horse Cave",
 		state: "Kentucky",
 		abbr: "KY",
 		loc: {lat: 37.179496, lng: -85.90691750000002},
-		trip: "Road Trip"
+		trip: "Road Trip",
+		search: "city"
 	},
 	{
 		city: "Nashville",
 		state: "Tennessee",
 		abbr: "TN",
 		loc: {lat: 36.1626638, lng: -86.78160159999999},
-		trip: "Road Trip"
+		trip: "Road Trip",
+		search: "city"
 	},
 	{
 		city: "Gatlinburg",
 		state: "Tennessee",
 		abbr: "TN",
 		loc: {lat: 35.714259, lng: -83.51016379999999},
-		trip: "Road Trip"
+		trip: "Road Trip",
+		search: "city"
 	},
 	{
 		city: "Asheville",
 		state: "North Carolina",
 		abbr: "NC",
 		loc: {lat: 35.5950581, lng: -82.55148689999999},
-		trip: "Road Trip"
+		trip: "Road Trip",
+		search: "city"
 	},
 	{
 		city: "Floyd",
 		state: "virginia",
 		abbr: "VA",
 		loc: {lat: 36.9112443, lng: -80.32005019999997},
-		trip: "Road Trip"
+		trip: "Road Trip",
+		search: "full"
 	},
 	{
 		city: "Clarksburg",
 		state: "West Virginia",
 		abbr: "WV",
 		loc: {lat: 39.2806451, lng: -80.34453409999998},
-		trip: "Road Trip"
+		trip: "Road Trip",
+		search: "full"
 	}
 ];
 
@@ -199,6 +226,7 @@ var place = function(data){
 	this.loc = ko.observable(data.loc);
 	this.trip = ko.observable(data.trip);
 	this.enabled = ko.observable(true);
+	this.search = ko.observable(data.search);
 }
 
 //View model contains the main driver of the work.
@@ -211,11 +239,8 @@ var viewModel = function(){
 	locationData.forEach(function(placeData){
 		self.locations.push(new place(placeData));
 	});
+	//adding a custom sort array to sort by city name
 	self.locations.sort(function(left, right){
-		console.log("---compare---");
-		console.log(left.city());
-		console.log(right.city());
-		console.log("-------------");
 		if (left.city() == right.city()){
 			return 0;
 		}else if (left.city() < right.city()){
