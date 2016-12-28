@@ -294,7 +294,7 @@ var viewModel = function(){
 		});
 		for (var i = 0; i < self.locations().length; i++){
 			if (self.locations()[i].loc() != ""){
-				addMarker(self.locations()[i]);
+				addMarker(self.locations()[i], i);
 /*			}else{
 				getGeoCodeLoc(map); */
 			}
@@ -305,25 +305,31 @@ var viewModel = function(){
 
 	//First create a new marker and push it to the marker array
 	//Second create a map of loc:{lat: , lng:} and Index position to make it easier in a future function to update the marker
-	function addMarker(location){
+	function addMarker(location, placeID){
 		var marker = new google.maps.Marker({
 			map: map,
 			title: location.city(),
 			position: location.loc(),
-			animation: google.maps.Animation.DROP
+			animation: google.maps.Animation.DROP,
+			id: placeID,
+			data: location
 		});
 		markers.push(marker)
 		//I don't want to have to iterate over the marker array multiple times in the updateMapMarkers call as this would be inefficient. Creating a map to store the lat/lng and index location combination
 		markerMap.set(location.loc(), markers.indexOf(marker));
 		marker.addListener('click', function(){
-			showInfo(marker, infoWindow);
+			showInfo(marker, infoWindow, null);
 		});
 
 	};
 	
-	function showInfo(marker, infowindow){
+	function showInfo(marker, infowindow, data){
 		clearBounce();
-		getWikiInfo(marker.getTitle());
+		var locData = data;
+		if (locData === null){
+			locData = marker.data;
+		}
+		getWikiInfo(locData);
 		if (infowindow.marker != marker){
 			infowindow.marker = marker;
 			infowindow.setContent('<div>'+marker.title+'</div>');
@@ -394,16 +400,22 @@ var viewModel = function(){
 	self.showWindow = function (data){
 		//gets the associated marker with the list item that was clicked
 		var clickedMarker = markers[markerMap.get(data.loc())];
-		showInfo(clickedMarker, infoWindow);
+		showInfo(clickedMarker, infoWindow, data);
 	}
 	
 	initMap();
 	
-	function getWikiInfo(city){
-		var wikiItem
+	function getWikiInfo(data){
+		//Need to get the place based off the ID to determine what type of search. Then pass that in to the search criteria
+		var searchCriteria;
+		if (data.search() == "full"){
+			searchCriteria = data.fullName();
+		}else{
+			searchCriteria = data.city();
+		}
 		$.ajax({
 		url: 'http://en.wikipedia.org/w/api.php',
-		data: { action: 'opensearch', search: city, format: 'json'},
+		data: { action: 'opensearch', search: searchCriteria, format: 'json'},
 		dataType: 'jsonp'})
 		.done(	
 		function(x){
