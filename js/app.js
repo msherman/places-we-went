@@ -211,6 +211,18 @@ var viewModel = function(){
 	locationData.forEach(function(placeData){
 		self.locations.push(new place(placeData));
 	});
+	self.locations.sort(function(left, right){
+		console.log("---compare---");
+		console.log(left.city());
+		console.log(right.city());
+		console.log("-------------");
+		if (left.city() == right.city()){
+			return 0;
+		}else if (left.city() < right.city()){
+			return -1;
+		}
+		return 1;
+	});
 	self.locTypeField = ko.observable();
 	
 	//Add a function when the DDL changes to update the visible markers both in the list and in google maps.
