@@ -318,7 +318,6 @@ var viewModel = function(){
 		//I don't want to have to iterate over the marker array multiple times in the updateMapMarkers call as this would be inefficient. Creating a map to store the lat/lng and index  combination
 		markerMap.set(location.loc(), markers.indexOf(marker));
 		marker.addListener('click', function(){
-			map.setCenter(marker.getPosition());
 			showInfo(marker, infoWindow, null);
 		});
 
@@ -327,6 +326,7 @@ var viewModel = function(){
 	//This function will clear any bouncing markers, validate that the place data was sent in and if not go get it
 	//Then it calls wikpedia API via another function passing in a success and failure function. Based on the results it calls the appropriate function
 	function showInfo(marker, infowindow, data){
+		map.setCenter(marker.getPosition());
 		clearBounce();
 		var locData = data;
 		if (locData === null){
@@ -434,10 +434,9 @@ var viewModel = function(){
 			dataType: 'jsonp'
 		}).done(cb).fail(failure);
 	}
+		initMap();
+		addNavTypes();
 };
-	
-	initMap();
-	addNavTypes();
 
 //initial app call to create the KO bindings and load the map.
 function loadApp(){
