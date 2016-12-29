@@ -285,7 +285,9 @@ var viewModel = function(){
 	var map;
 	var markers = [];
 	var markerMap = new Map();
-	var infoWindow = new google.maps.InfoWindow();
+	var infoWindow = new google.maps.InfoWindow({
+		maxWidth: 200
+	});
 	//Initialize the starting map, add markers, and center the map.
 	function initMap(){
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -329,18 +331,25 @@ var viewModel = function(){
 		if (locData === null){
 			locData = marker.data;
 		}
-		var info = getWikiInfo(locData);
-		console.log(info);
-		if (infowindow.marker != marker){
-			infowindow.marker = marker;
-			infowindow.setContent(info);
-			infowindow.open(map, marker);
-			marker.setAnimation(google.maps.Animation.BOUNCE);
-			infowindow.addListener('closeclick', function(){
-				infowindow.marker = null;
-				marker.setAnimation(null);
-			});
-		}
+		getWikiInfo(locData, function(x){
+			if (infowindow.marker != marker){
+				infowindow.marker = marker;
+				// add a title
+				var content = "<div class=\"title\"><h2>"+locData.name()+"</h2></div><br />";
+				content += "<div><strong>Trip: </strong>"+locData.trip()+"</div><br />";
+				//add the wiki details
+				content += "<divclass=\"details\"><h3>Details</h3><em>"+x[2][0]+"</div><br />"
+				//add the attribution
+				content += "<div><strong>Source: <a href="+x[3][0]+" target=\"_blank\">Wikipedia</a></strong></div>";
+				infowindow.setContent(content);
+				infowindow.open(map, marker);
+				marker.setAnimation(google.maps.Animation.BOUNCE);
+				infowindow.addListener('closeclick', function(){
+					infowindow.marker = null;
+					marker.setAnimation(null);
+				});
+			}
+		});
 	}
 	
 	//this function loops through all markers and turns off their animation
@@ -406,7 +415,7 @@ var viewModel = function(){
 	
 	initMap();
 	
-	function getWikiInfo(data){
+	function getWikiInfo(data, cb){
 		//Need to get the place based off the ID to determine what type of search. Then pass that in to the search criteria
 		var searchCriteria;
 		if (data.search() == "full"){
@@ -419,16 +428,7 @@ var viewModel = function(){
 		url: 'http://en.wikipedia.org/w/api.php',
 		data: { action: 'opensearch', search: searchCriteria, format: 'json'},
 		dataType: 'jsonp'})
-		.done(	
-		function(x){
-			console.log(x);
-			console.log("-----Title-----");
-			console.log(x[1][0]);
-			console.log("-----Description-----");
-			console.log(x[2][0]);
-			info = "<div><span>-----Title-----</span><span>"+x[1][0]+"</span><span>-----Description-----</span><span>"+x[2][0]+"</span><span>Source: <a href="+x[3][0]+">Wikipedia</a></span></div>";
-			return info;
-		})
+		.done(cb)
 		.fail(function(x){
 			console.log('failed');
 		});
