@@ -29,7 +29,7 @@ var locationData = [
 		state: "Minnesota",
 		abbr: "MN",
 		loc: {lat: 44.977753, lng: -93.26501080000003},
-		trip: "Weekend Getaways",
+		trip: "A Weekend Getaway",
 		search: "city"
 	},
 	{
@@ -85,7 +85,7 @@ var locationData = [
 		state: "Louisianna",
 		abbr: "LA",
 		loc: {lat: 29.95106579999999, lng: -90.0715323},
-		trip: "Weekend Getaways",
+		trip: "A Weekend Getaway",
 		search: "city"
 	},
 	{
@@ -267,7 +267,6 @@ var viewModel = function(){
 	//This builds the array needed for the drop down list.
 	function addNavTypes(){
 		var locDetails;
-		self.locationTypes.push("All");
 		for (var i = 0; i < self.locations().length; i++){
 			locDetails = self.locations()[i];
 			if (self.locationTypes.indexOf(locDetails.trip()) == -1){
@@ -275,6 +274,8 @@ var viewModel = function(){
 			}
 		}
 		self.locationTypes.sort();
+		//this command puts it at the beginning. Yay builtins!
+		self.locationTypes.unshift("All");
 	}
 
 	addNavTypes();
@@ -426,7 +427,6 @@ var viewModel = function(){
 	initMap();
 	
 	function getWikiInfo(data, cb, failure){
-		//Need to get the place based off the ID to determine what type of search. Then pass that in to the search criteria
 		var searchCriteria;
 		if (data.search() == "full"){
 			searchCriteria = data.fullName();
@@ -435,12 +435,11 @@ var viewModel = function(){
 		}
 		var info;
 		$.ajax({
-		url: 'http://en.wikipedia.org/w/api.php',
-		timeout: 1500,
-		data: { action: 'opensearch', search: searchCriteria, format: 'json'},
-		dataType: 'jsonp'})
-		.done(cb)
-		.fail(failure);
+			url: 'http://en.wikipedia.org/w/api.php',
+			timeout: 1500,
+			data: { action: 'opensearch', search: searchCriteria, format: 'json'},
+			dataType: 'jsonp'
+		}).done(cb).fail(failure);
 	//https://en.wikipedia.org/w/api.php?action=query&list=allpages&apfrom=New%20York,%20NY&apto=New%20York,%20NY&aplimit=5
 	}
 }

@@ -14,7 +14,7 @@
 			<div class="places-gone">
 				<div class="location"> FILTER </div>
 				<div class="location">
-					<select data-bind="options: locationTypes, value: locTypeField"></select>
+					<select class="locationTypes" data-bind="options: locationTypes, value: locTypeField"></select>
 				</div>
 				<div data-bind="foreach: locations" class="location" id="locationList">
 					<div data-bind="text: name, visible: enabled, click: $parent.showWindow" class="place"></div>

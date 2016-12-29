@@ -9,7 +9,6 @@ html, body, .container{
 	position: relative;
 }
 .places-gone{
-	background-color: #ccc;
 	position: absolute;
 	top: 10px;
 	left: 10px;
@@ -32,7 +31,7 @@ html, body, .container{
 }
 
 #locationList{
-	display: none;
+	/*display: none;*/
 }
 .title, .details{
 	width: 100%;
@@ -43,4 +42,7 @@ html, body, .container{
 h2, h3{
 	padding: 0;
 	margin: 0;
+}
+.locationTypes{
+	background-color: #ccc;
 }
