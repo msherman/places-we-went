@@ -9,6 +9,7 @@ html, body, .container{
 	position: relative;
 }
 .places-gone{
+	display: none;
 	position: absolute;
 	top: 10px;
 	left: 10px;
@@ -45,4 +46,20 @@ h2, h3{
 }
 .locationTypes{
 	background-color: #ccc;
+}
+
+.menuControl{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	background-color: #ccc;
+	margin: 0;
+	padding: 0;
+}
+
+.show{
+	display:block;
+}
+.menuControlPushed{
+	left: 160px;
 }

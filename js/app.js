@@ -321,6 +321,7 @@ var viewModel = function(){
 		//I don't want to have to iterate over the marker array multiple times in the updateMapMarkers call as this would be inefficient. Creating a map to store the lat/lng and index location combination
 		markerMap.set(location.loc(), markers.indexOf(marker));
 		marker.addListener('click', function(){
+			map.setCenter(marker.getPosition());
 			showInfo(marker, infoWindow, null);
 		});
 
@@ -334,31 +335,36 @@ var viewModel = function(){
 		}
 		if (infowindow.marker != marker){
 			infowindow.marker = marker;
-		// add a title
-		var content = "<div class=\"title\"><h2>"+locData.name()+"</h2></div><br />";
-		// add the trip (filter);
-		content += "<div><strong>Trip: </strong>"+locData.trip()+"</div><br />";
-		getWikiInfo(locData,
-			//Success function
-			function(x){
-				//add the wiki details
-				content += "<divclass=\"details\"><h3>Details</h3><em>"+x[2][0]+"</em></div><br />"
-				//add the attribution
-				content += "<div><strong>Source: <a href="+x[3][0]+" target=\"_blank\">Wikipedia</a></strong></div>";
-				infowindow.setContent(content);
-				infowindow.open(map, marker);
-			},
-			//failure function
-			function(x){
-				content += "<divclass=\"details\"><h3>Details</h3><em>Failed to load Wikipedia data</em></div><br />";
-				infowindow.setContent(content);
-				infowindow.open(map, marker);
-			}
-		);
-		marker.setAnimation(google.maps.Animation.BOUNCE);
-		infowindow.addListener('closeclick', function(){
-			infowindow.marker = null;
-			marker.setAnimation(null);
+			// add a title
+			var content = "<div class=\"title\"><h2>"+locData.name()+"</h2></div><br />";
+			// add the trip (filter);
+			content += "<div><strong>Trip: </strong>"+locData.trip()+"</div><br />";
+			getWikiInfo(locData,
+				//Success function
+				function(x){
+					//add the wiki details
+					content += "<divclass=\"details\"><h3>Details</h3><em>"+x[2][0]+"</em></div><br />"
+					//add the attribution
+					content += "<div><strong>Source: <a href="+x[3][0]+" target=\"_blank\">Wikipedia</a></strong></div>";
+					infowindow.setContent(content);
+					infowindow.open(map, marker);
+				},
+				//failure function
+				function(x){
+					content += "<divclass=\"details\"><h3>Details</h3><em>Failed to load Wikipedia data</em></div><br />";
+					infowindow.setContent(content);
+					infowindow.open(map, marker);
+				}
+			);
+			marker.setAnimation(google.maps.Animation.BOUNCE);
+			//bounce twice then stop. A bounce is roughly 700ms. eyeballed it.
+			window.setTimeout(function(){
+				marker.setAnimation(null);
+			}, 1400);
+			infowindow.addListener('closeclick', function(){
+				infowindow.marker = null;
+				marker.setAnimation(null);
+				centerMap(false);
 			});
 		}
 	}
@@ -374,6 +380,7 @@ var viewModel = function(){
 	
 	//This checks the  locations array to see if it is enabled and if it exists on the map. If it is enabled and not on the map it will be added to the map. If it isn't enabled and on the map it removes it.
 	function updateMapMarkers(){
+		infoWindow.marker = null;
 		var markerPositionInArray;
 		for (var i = 0; i < self.locations().length; i++){
 			markerPositionInArray = markerMap.get(self.locations()[i].loc());
@@ -384,7 +391,6 @@ var viewModel = function(){
 			}
 		}
 		centerMap(map);
-		infoWindow.marker = null;
 	}
 
 	/* Helper function to find geo locations as needed */
@@ -403,7 +409,7 @@ var viewModel = function(){
 	};
 	
 	//centers the map
-	function centerMap(){
+	function centerMap(reDrop){
 		var activeMarkerCount = 0;
 		var bounds = new google.maps.LatLngBounds();
 		for (var i = 0; i < markers.length; i++){
@@ -411,7 +417,9 @@ var viewModel = function(){
 				bounds.extend(markers[i].position);
 				activeMarkerCount +=1;
 			}
-			markers[i].setAnimation(google.maps.Animation.DROP);
+			if (reDrop){
+				markers[i].setAnimation(google.maps.Animation.DROP);
+			}
 		};
 		map.fitBounds(bounds);
 		if (activeMarkerCount < markers.length){
@@ -448,3 +456,8 @@ var viewModel = function(){
 function loadApp(){
 	ko.applyBindings(new viewModel());
 }
+
+$(".menuControl").click(function(){
+	$(".places-gone").toggleClass("show");
+	$(this).toggleClass("menuControlPushed");
+})
