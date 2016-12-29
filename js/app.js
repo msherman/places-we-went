@@ -327,6 +327,9 @@ var viewModel = function(){
 	//This function will clear any bouncing markers, validate that the place data was sent in and if not go get it
 	//Then it calls wikpedia API via another function passing in a success and failure function. Based on the results it calls the appropriate function
 	function showInfo(marker, infowindow, data){
+				map.setCenter(marker.getPosition());
+				console.log(marker.getPosition());
+				console.log("fuck you too");
 		clearBounce();
 		var locData = data;
 		if (locData === null){
