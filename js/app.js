@@ -227,7 +227,7 @@ var place = function(data){
 	this.trip = ko.observable(data.trip);
 	this.enabled = ko.observable(true);
 	this.search = ko.observable(data.search);
-}
+};
 
 //View model contains the main driver of the work.
 var viewModel = function(){
@@ -274,11 +274,10 @@ var viewModel = function(){
 			}
 		}
 		self.locationTypes.sort();
-		//this command puts it at the beginning. Yay builtins!
+		//this command puts it at the beginning. Yay built-ins!
 		self.locationTypes.unshift("All");
 	}
 
-	addNavTypes();
 	
 	/*****************/
 	/* map functions */
@@ -296,15 +295,13 @@ var viewModel = function(){
 			mapTypeControl: false
 		});
 		for (var i = 0; i < self.locations().length; i++){
-			if (self.locations()[i].loc() != ""){
+			if (self.locations()[i].loc() !== ""){
 				addMarker(self.locations()[i], i);
-/*			}else{
-				getGeoCodeLoc(map); */
 			}
 		}
 		centerMap(map);
 		
-	};
+	}
 
 	//First create a new marker and push it to the marker array
 	//Second create a map of loc:{lat: , lng:} and Index position to make it easier in a future function to update the marker
@@ -317,16 +314,18 @@ var viewModel = function(){
 			id: placeID,
 			data: location
 		});
-		markers.push(marker)
-		//I don't want to have to iterate over the marker array multiple times in the updateMapMarkers call as this would be inefficient. Creating a map to store the lat/lng and index location combination
+		markers.push(marker);
+		//I don't want to have to iterate over the marker array multiple times in the updateMapMarkers call as this would be inefficient. Creating a map to store the lat/lng and index  combination
 		markerMap.set(location.loc(), markers.indexOf(marker));
 		marker.addListener('click', function(){
 			map.setCenter(marker.getPosition());
 			showInfo(marker, infoWindow, null);
 		});
 
-	};
+	}
 	
+	//This function will clear any bouncing markers, validate that the place data was sent in and if not go get it
+	//Then it calls wikpedia API via another function passing in a success and failure function. Based on the results it calls the appropriate function
 	function showInfo(marker, infowindow, data){
 		clearBounce();
 		var locData = data;
@@ -343,7 +342,7 @@ var viewModel = function(){
 				//Success function
 				function(x){
 					//add the wiki details
-					content += "<divclass=\"details\"><h3>Details</h3><em>"+x[2][0]+"</em></div><br />"
+					content += "<divclass=\"details\"><h3>Details</h3><em>"+x[2][0]+"</em></div><br />";
 					//add the attribution
 					content += "<div><strong>Source: <a href="+x[3][0]+" target=\"_blank\">Wikipedia</a></strong></div>";
 					infowindow.setContent(content);
@@ -392,21 +391,6 @@ var viewModel = function(){
 		}
 		centerMap(map);
 	}
-
-	/* Helper function to find geo locations as needed */
-	function getGeoCodeLoc(){
-		var geocoder = new google.maps.Geocoder();
-		for (var i = 0; i < locations().length; i++){
-			if (locations()[i].loc == ""){
-				geocoder.geocode({'address':locations()[i].name}, function(results, status){
-					if (status === 'OK'){
-						console.log(results[0].formatted_address+",loc: {lat: "+results[0].geometry.location.lat()+", lng: "+results[0].geometry.location.lng()+"}");
-						addMarker(results[0].geometry.location);
-					}
-				});
-			}	
-		}
-	};
 	
 	//centers the map
 	function centerMap(reDrop){
@@ -420,20 +404,21 @@ var viewModel = function(){
 			if (reDrop){
 				markers[i].setAnimation(google.maps.Animation.DROP);
 			}
-		};
+		}
 		map.fitBounds(bounds);
 		if (activeMarkerCount < markers.length){
 			map.setZoom(5);
 		}
-	};
+	}
+	
+	//function to show the window if the list item is clicked.
 	self.showWindow = function (data){
 		//gets the associated marker with the list item that was clicked
 		var clickedMarker = markers[markerMap.get(data.loc())];
 		showInfo(clickedMarker, infoWindow, data);
-	}
+	};
 	
-	initMap();
-	
+	//Gets the wiki info passing in a callback for both done and failure.
 	function getWikiInfo(data, cb, failure){
 		var searchCriteria;
 		if (data.search() == "full"){
@@ -448,16 +433,20 @@ var viewModel = function(){
 			data: { action: 'opensearch', search: searchCriteria, format: 'json'},
 			dataType: 'jsonp'
 		}).done(cb).fail(failure);
-	//https://en.wikipedia.org/w/api.php?action=query&list=allpages&apfrom=New%20York,%20NY&apto=New%20York,%20NY&aplimit=5
 	}
-}
+};
+	
+	initMap();
+	addNavTypes();
 
 //initial app call to create the KO bindings and load the map.
 function loadApp(){
 	ko.applyBindings(new viewModel());
 }
 
+
+//This only handles the hamburger menu
 $(".menuControl").click(function(){
 	$(".places-gone").toggleClass("show");
 	$(this).toggleClass("menuControlPushed");
-})
+});
