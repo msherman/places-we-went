@@ -134,7 +134,7 @@ var locationData = [
 		abbr: "UT",
 		loc: {lat: 41.7369803, lng: -111.8338359},
 		trip: "Work",
-		search: "Full"
+		search: "full"
 	},
 	{
 		city: "Monett",
@@ -331,25 +331,35 @@ var viewModel = function(){
 		if (locData === null){
 			locData = marker.data;
 		}
-		getWikiInfo(locData, function(x){
-			if (infowindow.marker != marker){
-				infowindow.marker = marker;
-				// add a title
-				var content = "<div class=\"title\"><h2>"+locData.name()+"</h2></div><br />";
-				content += "<div><strong>Trip: </strong>"+locData.trip()+"</div><br />";
+		if (infowindow.marker != marker){
+			infowindow.marker = marker;
+		// add a title
+		var content = "<div class=\"title\"><h2>"+locData.name()+"</h2></div><br />";
+		// add the trip (filter);
+		content += "<div><strong>Trip: </strong>"+locData.trip()+"</div><br />";
+		getWikiInfo(locData,
+			//Success function
+			function(x){
 				//add the wiki details
-				content += "<divclass=\"details\"><h3>Details</h3><em>"+x[2][0]+"</div><br />"
+				content += "<divclass=\"details\"><h3>Details</h3><em>"+x[2][0]+"</em></div><br />"
 				//add the attribution
 				content += "<div><strong>Source: <a href="+x[3][0]+" target=\"_blank\">Wikipedia</a></strong></div>";
 				infowindow.setContent(content);
 				infowindow.open(map, marker);
-				marker.setAnimation(google.maps.Animation.BOUNCE);
-				infowindow.addListener('closeclick', function(){
-					infowindow.marker = null;
-					marker.setAnimation(null);
-				});
+			},
+			//failure function
+			function(x){
+				content += "<divclass=\"details\"><h3>Details</h3><em>Failed to load Wikipedia data</em></div><br />";
+				infowindow.setContent(content);
+				infowindow.open(map, marker);
 			}
-		});
+		);
+		marker.setAnimation(google.maps.Animation.BOUNCE);
+		infowindow.addListener('closeclick', function(){
+			infowindow.marker = null;
+			marker.setAnimation(null);
+			});
+		}
 	}
 	
 	//this function loops through all markers and turns off their animation
@@ -415,7 +425,7 @@ var viewModel = function(){
 	
 	initMap();
 	
-	function getWikiInfo(data, cb){
+	function getWikiInfo(data, cb, failure){
 		//Need to get the place based off the ID to determine what type of search. Then pass that in to the search criteria
 		var searchCriteria;
 		if (data.search() == "full"){
@@ -426,12 +436,11 @@ var viewModel = function(){
 		var info;
 		$.ajax({
 		url: 'http://en.wikipedia.org/w/api.php',
+		timeout: 1500,
 		data: { action: 'opensearch', search: searchCriteria, format: 'json'},
 		dataType: 'jsonp'})
 		.done(cb)
-		.fail(function(x){
-			console.log('failed');
-		});
+		.fail(failure);
 	//https://en.wikipedia.org/w/api.php?action=query&list=allpages&apfrom=New%20York,%20NY&apto=New%20York,%20NY&aplimit=5
 	}
 }
