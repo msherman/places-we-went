@@ -449,3 +449,7 @@ $(".menuControl").click(function(){
 	$(".places-gone").toggleClass("show");
 	$(this).toggleClass("menuControlPushed");
 });
+
+function gracefulMapFail(){
+	alert("Failed to load google maps. Please try again later");
+}
