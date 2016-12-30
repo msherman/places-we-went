@@ -220,6 +220,7 @@ var locationData = [
 
 //Place object that will hold the Knockout variables
 var place = function(data){
+	'use strict';
 	this.city = ko.observable(data.city);
 	this.name = ko.observable(data.city+", "+data.abbr);
 	this.fullName = ko.observable(data.city+", "+data.state);
@@ -231,6 +232,7 @@ var place = function(data){
 
 //View model contains the main driver of the work.
 var viewModel = function(){
+	'use strict';
 	var self = this;
 	this.locationTypes = ko.observableArray([]);
 	this.locations = ko.observableArray([]);
@@ -440,6 +442,7 @@ var viewModel = function(){
 
 //initial app call to create the KO bindings and load the map.
 function loadApp(){
+	'use strict';
 	ko.applyBindings(new viewModel());
 }
 
@@ -451,5 +454,6 @@ $(".menuControl").click(function(){
 });
 
 function gracefulMapFail(){
+	'use strict';
 	alert("Failed to load google maps. Please try again later");
 }
